@@ -7,10 +7,12 @@ class Records extends Component {
     this.state={
       records:[
         {
+          id:'1',
           date:'2018-01-12',
           title:'收入',
           amount:'20'
         },{
+          id:'2',
           date:'2018-12-01',
           title:'支出',
           amount:'-200'
@@ -29,10 +31,10 @@ class Records extends Component {
               <th>Title</th>
               <th>Amount</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody>
             {
-              this.state.records.map(record=><Record record={record}/>)
+              this.state.records.map(record=><Record key={record.id} record={record}/>)
             }
           </tbody>
         </table>
