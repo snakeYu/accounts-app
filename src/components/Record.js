@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import {localDate} from '../utils/time'
 
 class Record extends Component{
   constructor(props){
@@ -8,9 +9,9 @@ class Record extends Component{
   render(){
     return (
          <tr>
-            <td>{this.props.record.date}</td>
-            <td>{this.props.record.title}</td>
-            <td>{this.props.record.amount}</td>
+            <td>{localDate(this.props.date*1)}</td>
+            <td>{this.props.title}</td>
+            <td>{this.props.amount}</td>
           </tr>
     )
   }
