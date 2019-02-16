@@ -1,5 +1,7 @@
 import React,{Component} from 'react'
-import {localDate} from '../utils/time'
+import PropTypes from 'prop-types';
+import {localDate} from '../utils/time';
+
 
 class Record extends Component{
   constructor(props){
@@ -15,6 +17,13 @@ class Record extends Component{
           </tr>
     )
   }
+}
+
+Record.propTypes={
+  id:PropTypes.number,
+  date:PropTypes.string,
+  title:PropTypes.string,
+  amount:PropTypes.number
 }
 
 export default Record;

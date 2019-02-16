@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Record from './Record';
-import axios from 'axios'
+import * as RecordsAPI from '../utils/RecordsAPI';
 
 class Records extends Component {
   constructor(props){
@@ -14,7 +14,9 @@ class Records extends Component {
   render() {
     const {error,isLoaded,records} =this.state;
     if(error){
-      return <div>{error.toString()}</div>
+      // 每个库获取错误信息的api是不一样的，axios是error.message
+      return <div>Error:{error.message}</div>
+      
     }else if(!isLoaded){
       return <div>Loading...</div>
     }else{
@@ -42,10 +44,29 @@ class Records extends Component {
   }
   componentDidMount(){
     // 发起请求fetch版本
-    fetch('https://5c66bbb324e2140014f9edd2.mockapi.io/api/v1/records/').then(res=>res.json()).then(res=>{
+    // fetch('https://5c66bbb324e2140014f9edd2.mockapi.io/api/v1/records/')
+    // .catch(error=>{
+    //   console.log('a '+error.toString())
+    //   this.setState({
+    //     isLoaded:true,
+    //     error
+    //   })
+    // })
+    // .then(res=>res.json())
+    // .then(res=>{
+    //   this.setState({
+    //     isLoaded:true,
+    //     records:res
+    //   })
+    // })
+
+    // 发起请求axios版本老版本
+    // axios.get('https://5c66bbb324e2140014f9edd2.mockapi.io/api/v1/records/').then(res=>{
+    // 新版本,利用环境变量的方式
+    RecordsAPI.getAll().then(res=>{
       this.setState({
         isLoaded:true,
-        records:res
+        records:res.data
       })
     }).catch(error=>{
       this.setState({
@@ -53,19 +74,6 @@ class Records extends Component {
         error
       })
     })
-
-    // 发起请求axios版本
-    // axios.get('https://5c66bbb324e2140014f9edd2.mockapi.io/api/v1/records/').then(res=>{
-    //   this.setState({
-    //     isLoaded:true,
-    //     records:res.data
-    //   })
-    // }).catch(error=>{
-    //   this.setState({
-    //     isLoaded:true,
-    //     error
-    //   })
-    // })
   }
 }
 
