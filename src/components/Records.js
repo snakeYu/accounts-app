@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Record from './Record';
 import RecordForm  from './RecordForm'
+import AmountBox from './AmountBox'
 import * as RecordsAPI from '../utils/RecordsAPI';
 
 class Records extends Component {
@@ -36,7 +37,9 @@ class Records extends Component {
               <tbody>
                 {
                   records.map(record=><Record key={record.id} {...record} 
-                    handleUpdateRecord={this.updateRecord.bind(this)}/>)
+                    handleUpdateRecord={this.updateRecord.bind(this)}
+                    handleDeleteRecord={this.deleteRecord.bind(this)}
+                    />)
                 }
               </tbody>
             </table>
@@ -46,6 +49,11 @@ class Records extends Component {
     return (
       <div>
             <h2>Records</h2>
+            <div className="row mb-3">
+              <AmountBox text='收入(Credits)'type='success'  amount={this.credits()}   />
+              <AmountBox text='支出(Debits)' type='danger'   amount={this.debits()}   />
+              <AmountBox text='合计(Balance)' type='info'    amount={this.babance()}   />
+            </div>
             <RecordForm createNewRecord={this.handleCreateNewRecord.bind(this)}></RecordForm>
             {recordsComponent}
       </div>
@@ -85,7 +93,7 @@ class Records extends Component {
       })
     })
   }
-  // 更新records数据
+  // 获取records数据
   handleCreateNewRecord(data){
     // 方法一
     // let oldState=this.state.records;
@@ -104,7 +112,7 @@ class Records extends Component {
       isLoaded:true
     })
   }
-  updateRecord(data){
+  updateRecord(data){ //更新数据
     let records=this.state.records.map(record=>{
       if(data.id===record.id){
         return data;
@@ -116,6 +124,34 @@ class Records extends Component {
     this.setState({
       records
     })
+  }
+  deleteRecord(data){ //删除数据
+    let newR=this.state.records.filter((item,index)=>{
+      return item.id!==data.id
+    })
+    this.setState({
+      records:newR
+    })
+  }
+  credits(){ //收入
+    let credits=this.state.records.filter(item=>{
+      return item.amount>=0
+    })
+    return credits.reduce((prev,curr)=>{
+        return prev+curr.amount*1;
+    },0)
+
+  }
+  debits(){ //支出
+    let debits=this.state.records.filter(item=>{
+      return item.amount<0
+    })
+    return debits.reduce((prev,curr)=>{
+      return prev+curr.amount*1
+    },0)
+  }
+  babance(){
+    return this.credits()+this.debits();
   }
 }
 

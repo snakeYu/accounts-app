@@ -19,7 +19,7 @@ class Record extends Component{
           <td>{this.props.amount}</td>
           <td>
             <button className='btn btn-info mr-1' onClick={this.handleToggle.bind(this)}>Edit</button>
-            <button className='btn btn-danger'>Delete</button>
+            <button className='btn btn-danger' onClick={this.handleDelete.bind(this)}>Delete</button>
           </td>
         </tr>
   )}
@@ -51,7 +51,7 @@ class Record extends Component{
     }
   }
   
-  handleToggle(){ //进入编辑模式
+  handleToggle(){ //切换模式
     this.setState({
       edit:!this.state.edit
     })
@@ -71,6 +71,17 @@ class Record extends Component{
     .catch(error=>{
       console.log(error.message)
       
+    })
+  }
+  handleDelete(event){ //删除数据
+    event.preventDefault()
+
+    RecordAPI.deleteRecord(this.props.id)
+    .then(res=>{
+        this.props.handleDeleteRecord(res.data)
+    })
+    .catch(error=>{
+      console.log(error.message)
     })
   }
 }

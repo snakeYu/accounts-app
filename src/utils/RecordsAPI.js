@@ -6,3 +6,5 @@ export const getAll=()=>axios.get(`${api}/api/v1/records`)
 export const createRecord=(body)=>axios.post(`${api}/api/v1/records`,body)
 
 export const updateRecord=(id,body)=>axios.put(`${api}/api/v1/records/${id}`,body)
+
+export const deleteRecord=(id)=>axios.delete(`${api}/api/v1/records/${id}`)
