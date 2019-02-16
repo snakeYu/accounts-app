@@ -30,11 +30,13 @@ class Records extends Component {
                   <th>Date</th>
                   <th>Title</th>
                   <th>Amount</th>
+                  <th>do Some Thing?</th>
                 </tr>
               </thead> 
               <tbody>
                 {
-                  records.map(record=><Record key={record.id} {...record}/>)
+                  records.map(record=><Record key={record.id} {...record} 
+                    handleUpdateRecord={this.updateRecord.bind(this)}/>)
                 }
               </tbody>
             </table>
@@ -44,7 +46,7 @@ class Records extends Component {
     return (
       <div>
             <h2>Records</h2>
-            <RecordForm></RecordForm>
+            <RecordForm createNewRecord={this.handleCreateNewRecord.bind(this)}></RecordForm>
             {recordsComponent}
       </div>
     )
@@ -81,6 +83,38 @@ class Records extends Component {
         isLoaded:true,
         error
       })
+    })
+  }
+  // 更新records数据
+  handleCreateNewRecord(data){
+    // 方法一
+    // let oldState=this.state.records;
+    // oldState.push(data);  
+    // this.setState({
+    //   records:oldState,
+    //   error:null,
+    //   isLoaded:true
+    // })
+
+    // 方法二（推荐）
+    this.setState({
+      records:[...this.state.records,data],
+      // 把error和isloaded都更新
+      error:null,
+      isLoaded:true
+    })
+  }
+  updateRecord(data){
+    let records=this.state.records.map(record=>{
+      if(data.id===record.id){
+        return data;
+      }
+      else{
+        return record
+      }
+    })
+    this.setState({
+      records
     })
   }
 }
